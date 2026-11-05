@@ -1,72 +1,59 @@
-# 🚛 Truck Queue Simulator
+# 🚛 Resource Queue Simulator for Port Operations
 
-Simulador de fila de recursos para operações portuárias: caminhões chegam
-precisando de um tipo específico de equipamento (RTG ou Reach Stacker), e o
-sistema aloca automaticamente o equipamento disponível compatível. Quando não
-há equipamento livre, o caminhão entra em uma fila de espera (FIFO) e é
-atendido automaticamente assim que um equipamento do tipo certo é liberado.
+Simulation for port operations: trucks arrive requiring a specific type of equipment (RTG or Reach Stacker), and the system automatically allocates a compatible available equipment. When no equipment is free, the truck enters a waiting queue (FIFO) and is served automatically as soon as an equipment of the correct type is released.
 
-Este projeto nasceu da minha experiência prática como operador de guindaste em
-terminal portuário, onde a alocação de equipamentos para atendimento de
-caminhões é um processo real do dia a dia. A proposta foi modelar essa lógica
-em código, aplicando estruturas de dados e regras de negócio.
+This project was born from my practical experience as a crane operator at a port terminal, where allocating equipment to serve trucks is a real daily process. The goal was to model this logic in code, applying data structures and business rules.
 
-## Funcionalidades
+## Features
 
-- **Alocação automática de equipamento**: busca o primeiro equipamento livre
-  e compatível com o tipo necessário pelo caminhão (RTG ou RS).
-- **Cálculo automático de horário de saída**: a partir do horário de chegada
-  e da duração estimada do atendimento.
-- **Fila de espera (FIFO)**: caminhões sem equipamento disponível aguardam;
-  quando um equipamento libera, o primeiro caminhão da fila compatível com
-  aquele tipo é processado automaticamente.
-- **Liberação de equipamento**: simula o equipamento terminando um
-  atendimento e ficando disponível novamente.
-- **Relatório de estatísticas**: total de caminhões atendidos, em espera,
-  soma e média do tempo de atendimento.
+- **Automatic equipment allocation:** finds the first available equipment matching the truck's required type (RTG or RS).
+- **Automatic departure time calculation:** based on the arrival time and estimated service duration.
+- **FIFO waiting queue:** trucks without available equipment wait; when an equipment is released, the first compatible truck in the queue is processed automatically.
+- **Equipment release:** simulates the equipment finishing a service and becoming available again.
+- **Statistics report:** total trucks served, waiting, sum, and average service time.
 
-## Tecnologias
+## Technologies
 
-- **Python** 3 (sem dependências externas)
-- **datetime / timedelta** (cálculo de horários, biblioteca padrão)
+- Python 3 (no external dependencies)
+- `datetime` / `timedelta` (standard library for time calculations)
 
-## Estrutura do projeto
+## Project Structure
 
-```
-simulador-fila-caminhoes/
-├── dados.py     # Dados de exemplo: lista de equipamentos e caminhões
-├── logica.py     # Regras de negócio: alocação, liberação, fila e relatório
-├── main.py         # Executa a simulação completa e imprime os relatórios
+```text
+port-resource-queue-simulator/
+├── dados.py      # Sample data: list of equipment and trucks
+├── logica.py     # Business logic: allocation, release, queue, and report
+├── main.py       # Runs the complete simulation and prints the reports
 └── README.md
-```
 
-## Como funciona a lógica (resumo)
 
-1. Cada caminhão tem um tipo de equipamento necessário (`equipment_needed`).
-2. `find_available_equipment` procura um equipamento livre desse tipo.
-3. Se encontrar, `process_truck` aloca o equipamento e calcula o horário de
-   saída do caminhão.
-4. Se não encontrar, o caminhão permanece em espera (`departure_time: None`).
-5. Quando um equipamento é liberado (`release_equipment`),
-   `process_queue_after_release` verifica automaticamente se há algum
-   caminhão esperando por aquele tipo e o processa em seguida (FIFO).
+How the logic works (summary)
 
-## Como rodar
+Each truck has a required equipment type (equipment_needed).
 
-Não precisa instalar nenhuma dependência — só Python 3.
+find_available_equipment looks for a free equipment of that type.
 
-```bash
-git clone https://github.com/FabianoSeara/simulador-fila-caminhoes.git
-cd simulador-fila-caminhoes
+If found, process_truck allocates the equipment and calculates the truck's departure time.
+
+If not found, the truck remains waiting (departure_time: None).
+
+When an equipment is released (release_equipment), process_queue_after_release automatically checks if any truck is waiting for that type and processes it (FIFO).
+
+
+How to run
+
+No dependencies to install — just Python 3.
+
+git clone https://github.com/FabianoSeara/port-resource-queue-simulator.git
+cd port-resource-queue-simulator
 python main.py
-```
 
-## Exemplo de saída
 
-```
-truck ABC1234 alocated equipment 2 (RTG)
-truck AXF 3333 alocated equipment 5 (RS)
-truck GHI9012 alocated equipment 3 (RTG)
+Example Output
+
+truck ABC1234 allocated equipment 2 (RTG)
+truck AXF 3333 allocated equipment 5 (RS)
+truck GHI9012 allocated equipment 3 (RTG)
 Truck JKL3456 waiting, no RS available.
 Truck DEF5678 waiting, no RTG available.
 ============================================================
@@ -80,21 +67,18 @@ average service time: 25.0
 
 --- Simulating equipment 2 release ---
 Found Truck DEF5678 waiting for RTG
-truck DEF5678 alocated equipment 2 (RTG)
+truck DEF5678 allocated equipment 2 (RTG)
 ...
 served trucks: 5
 waiting trucks: 0
-```
 
-## Próximos passos
 
-- [ ] Simulação em tempo real (relógio avançando minuto a minuto), em vez de
-      liberações manuais
-- [ ] Geração de dados de teste aleatórios (mais caminhões, mais equipamentos)
-- [ ] Exportar relatório final em CSV
+## Next Steps
+
+□ Real-time simulation (clock ticking minute-by-minute) instead of manual releases
+□ Random test data generation (more trucks, more equipment)
+□ Export final report to CSV
 
 ---
 
-Projeto desenvolvido por [Fabiano Seára](https://github.com/FabianoSeara) como
-parte do meu portfólio de transição de carreira para desenvolvimento de
-software, com apoio de IA (Claude) no processo de aprendizado.
+Project developed by Fabiano Seára as part of my portfolio for transitioning to a software development career, with AI (Claude) assistance in the learning process.
